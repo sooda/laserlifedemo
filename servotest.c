@@ -12,8 +12,16 @@ void player_init() {
 	TIMSK3 = _BV(OCIE3A); // interrupt on compare match
 }
 
+uint8_t x;
+uint8_t a,b=63;
+
 ISR(TIMER3_COMPA_vect) {
-	servos_update(0, 63);
+	if (++x == 50) {
+		x = 0;
+		a = 63 - a;
+		b = 63 - a;
+	}
+	servos_update(a, b);
 	PORTD ^= _BV(6);
 }
 
@@ -25,6 +33,6 @@ int main() {
 	sei();
 	for (;;) {
 		_delay_ms(500);
-		PORTD ^= _BV(6);
+		//PORTD ^= _BV(6);
 	}
 }

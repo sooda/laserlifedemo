@@ -1,4 +1,5 @@
 #include <avr/io.h>
+#include <avr/interrupt.h>
 
 #define OCR_x OCR1A
 #define OCR_y OCR1B
@@ -17,31 +18,30 @@ void servos_init(void) {
 	// CTC mode, prescale 256 TODO prescale 64, multiply 0..255 ocr by 2 in update()
 	// clear oc0a/oc0b on compare match
 	// TOP at ICR3
-	TCCR1A = _BV(COM1A1) | _BV(COM1B1); // WGM11..10=0
+	TCCR1A = 0;//WHY U NO WORK (level always at 0V) _BV(COM1A1) | _BV(COM1B1); // WGM11..10=0
 	TCCR1B = _BV(WGM13) | _BV(WGM12) | _BV(CS12); // CTC, TOP at ICR1
+	TIMSK1 = _BV(OCIE1A) | _BV(OCIE1B) | _BV(TOIE1);
 	DDRB |= _BV(5) | _BV(6); // OC1A, OC1B
-	OCR_x = 0;
-	OCR_y = 0;
+	OCR_x = 0xff;
+	OCR_y = 0xff;
 	OCR_top = 0xffff;
 }
 
-#if 0
 ISR(TIMER1_OVF_vect) {
-	// FIXME: no need to do anything here?
+	// nothing to do?
 }
-#endif
+ISR(TIMER1_COMPA_vect) {
+	PORTB &= ~_BV(5);
+}
+ISR(TIMER1_COMPB_vect) {
+	PORTB &= ~_BV(6);
+}
 
 void servos_update(uint8_t x, uint8_t y) {
 	PORTB |= _BV(5) | _BV(6);
 	OCR_x = 64 + x;
 	OCR_y = 64 + y;
 	TCNT1 = 0;
-#if 0
-	uint8_t max = x;
-	if (y > x)
-		max = y;
-	OCR_top = max;
-#endif
 }
 
 
