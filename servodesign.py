@@ -12,12 +12,12 @@ TICKLEN = DURATION / TICKS
 
 TICKSCREENWID = screenSize[0] / TICKS
 
-data = [0] * TICKS
+YSCALE = 63
 
-YSCALE = 127
+data = [YSCALE/2] * TICKS
 
 def dump():
-	print [int(YSCALE * (1 + d)) for d in data]
+	print [int(YSCALE * d) for d in data]
 
 def grid():
 	for i in range(TICKS-1):
@@ -27,15 +27,15 @@ def updatetick(idx, val):
 	"""val [-1,1]"""
 	leftx = idx * TICKSCREENWID
 	topy = screenSize[1] / 2
-	boty = topy + screenSize[1] / 2 * val
+	height = 2 * (val - 0.5) * screenSize[1] / 2
 	pygame.draw.rect(screen, (0, 0,0), (leftx, 0, TICKSCREENWID-1, screenSize[1]))
-	pygame.draw.rect(screen, (0,255,0), (leftx, topy, TICKSCREENWID-1, boty-topy))
+	pygame.draw.rect(screen, (0,255,0), (leftx, topy, TICKSCREENWID-1, height))
 	pygame.display.flip()
 	data[idx] = val
 
 def mouseclick(pos):
 	tick = pos[0] // TICKSCREENWID
-	val = (float(pos[1]) - screenSize[1] / 2) / (screenSize[1] / 2)
+	val = float(pos[1]) / screenSize[1]
 	val = float(int(val * YSCALE)) / YSCALE
 
 	updatetick(tick, val)
