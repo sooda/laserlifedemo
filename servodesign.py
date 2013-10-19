@@ -1,5 +1,6 @@
 import pygame
 from pygame.locals import *
+from sys import argv
 
 SCREENWID = 800
 SCREENHEI = 600
@@ -8,7 +9,7 @@ pygame.init()
 screen = pygame.display.set_mode((SCREENWID, SCREENHEI))
 
 DURATION = 1.0
-TICKS = 42
+TICKS = 64 - 21
 TICKLEN = DURATION / TICKS
 
 TICKSCREENWID = float(SCREENWID) / TICKS
@@ -43,32 +44,42 @@ def mouseclick(pos):
 	updatetick(tick, val)
 
 def doevents():
-	for event in pygame.event.get():
-		if event.type == QUIT:
+	event = pygame.event.wait()
+	return doevent(event)
+
+def doevent(event):
+	if event.type == QUIT:
+		return False
+	elif event.type == KEYDOWN:
+		if event.key == K_ESCAPE:
 			return False
-		elif event.type == KEYDOWN:
-			if event.key == K_ESCAPE:
-				return False
-			elif event.key == K_SPACE:
-				dump()
-		elif event.type == KEYUP:
-			pass
-		elif event.type == MOUSEMOTION:
-			if event.buttons[0]:
-				mouseclick(event.pos)
-		elif event.type == MOUSEBUTTONUP:
-			if event.button == 1:
-				mouseclick(event.pos)
-		elif event.type == MOUSEBUTTONDOWN:
-			pass
-		elif event.type == ACTIVEEVENT:
-			pass
-		else:
-			print "Unhandled event",event
-			print event.type
+		elif event.key == K_SPACE:
+			dump()
+	elif event.type == KEYUP:
+		pass
+	elif event.type == MOUSEMOTION:
+		if event.buttons[0]:
+			mouseclick(event.pos)
+	elif event.type == MOUSEBUTTONUP:
+		if event.button == 1:
+			mouseclick(event.pos)
+	elif event.type == MOUSEBUTTONDOWN:
+		pass
+	elif event.type == ACTIVEEVENT:
+		pass
+	else:
+		print "Unhandled event",event
+		print event.type
 	return True
 
 def main():
+	if len(argv) > 1:
+		data = open(argv[1]).read()
+		data = data.split(", ")
+		data = map(int, data)
+		data = map(lambda x: float(x) / YSCALE, data)
+		for i, v in enumerate(data):
+			updatetick(i, v)
 	grid()
 	pygame.display.flip()
 	while True:

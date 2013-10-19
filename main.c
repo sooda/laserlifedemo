@@ -14,6 +14,7 @@ static void player_init() {
 	TCCR3A = 0; // no OCn's, WGM11..10=0
 	TCCR3B = _BV(WGM32) | _BV(CS32); // CTC, TOP=OCRnA, 256 prescale
 	OCR3A = 1250; // 16e6/(256*50), 50Hz
+	OCR3A = 976; // ~64 hz
 	TIMSK3 = _BV(OCIE3A); // interrupt on compare match
 }
 
