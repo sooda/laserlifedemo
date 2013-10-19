@@ -1,4 +1,4 @@
-FILES ?= main.c servoctl.c lasers.c display.c analyze.c
+FILES ?= main.c servoctl.c lasers.c display.c analyze.c saa1099.c saamusic.c music.c
 PART ?= 90usb1286
 PROG ?= program
 F_CPU ?= 16000000

@@ -5,6 +5,8 @@
 #include "servos.h"
 #include "display.h"
 #include "lasers.h"
+#include "saamusic.h"
+#include "music.h"
 #include "demo.h"
 
 void player_init() {
@@ -18,8 +20,11 @@ void player_init() {
 static frametime_t frame;
 
 ISR(TIMER3_COMPA_vect) {
-	screen_update(frame++);
 	PORTD ^= _BV(6);
+	screen_update(frame);
+	heartbeat_tf(frame);
+	saa1099_sync();
+	frame++;
 }
 
 int main() {
@@ -28,6 +33,11 @@ int main() {
 	lasers_init();
 	player_init();
 	servos_init();
+	saa1099music_init();
+	saa1099_sound_enable();
+	saa1099_set_amp(0, 0xf, 0xf);
+	saa1099_freq_enable(0);
+
 	sei();
 	for (;;)
 		;
