@@ -1,0 +1,12 @@
+laser life, a wild demo for altparty 2013
+by sooda & tkln
+
+- Teensy++ 2.0 (AT90USB1286) @ 16 MHz
+- Servos: pulses from 16bit timer 1: OCR1A and OCR1B (PB5:6)
+- SAA1099: data lines = PORTC, clock = PD0 (8MHz from 8bit timer 0), A0 = PD1,
+  CS = PD2, WR = PD3
+- state update @ 64 hz
+- servos: any standard ones, those blue cheap towerpro micro servos on the prod
+- bug: audio goes more or less haywire depending on the hardware and avr-gcc
+  version, maybe just a timing problem
+- the makefiles are copypasta'd and incomplete, use teensy_loader_cli for flashing

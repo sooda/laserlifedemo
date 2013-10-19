@@ -1,0 +1,18 @@
+Laserlife for wild compo at altparty 2013
+
+Platform: Teensy++ 2.0 (AT90USB1286) @ 16 MHz, Philips SAA1099 sound chip,
+micro-sized rc servos, laser pointers, some auxiliary electronics, duct tape.
+
+Audio registers and servo positions updated 64 times per second. A few bugs
+make the sound go quite wrong in the more complex scenes (one night for coding
+and building, no time for debugging!)
+
+Reproduce it yourself, here's the wiring for the avr chip and saa1099:
+- Servos: pulses from 16bit timer 1: OCR1A and OCR1B (PB5:6)
+- SAA1099: data lines = PORTC, clock = PD0 (8MHz from 8bit timer 0), A0 = PD1,
+  CS = PD2, WR = PD3
+- party version hex file in http://sooda.dy.fi/bar/laserlife.hex
+
+and the code in http://github.com/sooda
+
+sooda and tkln 2013
