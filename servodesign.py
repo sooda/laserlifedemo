@@ -18,7 +18,7 @@ YSCALE = 63
 data = [0.5] * TICKS
 
 def dump():
-	print " ".join([str(int(YSCALE * d)) for d in data])
+	print ", ".join([str(int(YSCALE * d)) for d in data])
 
 def grid():
 	for i in range(TICKS-1):
