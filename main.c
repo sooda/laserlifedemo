@@ -20,19 +20,6 @@ static void player_init() {
 
 static frametime_t frame;
 
-static void circle() {
-	static const uint8_t sz = 16;
-	static uint8_t x = sz, y = 32, xdir = 2, ydir = 2;
-	x += xdir;
-	y += ydir;
-	if (x <= sz || x >= 63-sz)
-		xdir = -xdir;
-	if (y <= sz || y >= 63-sz)
-		ydir = -ydir;
-	servos_update(x, y);
-	lasers_on(RED);
-}
-
 ISR(TIMER3_COMPA_vect) {
 	PORTD ^= _BV(6);
 	screen_update(frame);

@@ -90,11 +90,15 @@ void screen_update(frametime_t frameno) {
 		update(curridx, frameno);
 		laststop = frameno;
 	} else {
-		lasers_off(RED|GREEN);
 		frametime_t nextstart = laststop + BLANKTIME;
 		if (nextstart >= currframe->lastframe)
 			currframe++;
-		update(0, nextstart);
+		if (currframe->type == TYPE_PICTURE) {
+			lasers_off(RED|GREEN);
+			update(0, nextstart);
+		} else {
+			update(curridx, frameno);
+		}
 	}
 #if 1
 	if (++curridx == SECTICKS) {
