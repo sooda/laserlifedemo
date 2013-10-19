@@ -19,6 +19,4 @@ void saa1099_set_reg(uint8_t reg, uint8_t val);
 void saa1099_set_ctl(uint8_t byte);
 void saa1099_set_adr(uint8_t byte);
 void saa1099_clear_regs();
-void saa1099_set_freq(uint8_t channel, uint8_t note, int16_t fine);
-void saa1099_set_amp(uint8_t channel, uint8_t valr, uint8_t vall);
 #endif

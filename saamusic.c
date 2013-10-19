@@ -15,7 +15,7 @@ void saa1099_cache_reg(uint8_t reg, uint8_t val)
     regs[reg] = val;
 }
 
-static void saa1099_reg_init()
+void saa1099_reg_init()
 {
     uint8_t i;
     /* init the registers */

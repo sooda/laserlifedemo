@@ -67,5 +67,6 @@ void saa1099_noise_enable(uint8_t channel);
 void saa1099_noise_disable(uint8_t channel);
 void saa1099_set_freq(uint8_t channel, uint8_t note, int16_t fine);
 void saa1099_set_noise_rate(uint8_t generator, uint8_t rate);
+void saa1099_reg_init();
 
 #endif

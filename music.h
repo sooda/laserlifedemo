@@ -6,5 +6,6 @@
 void ambulance(uint16_t t);
 void heartbeat_tf(uint16_t t);
 void glitch(uint16_t t);
+void melody(uint16_t t);
 
 #endif

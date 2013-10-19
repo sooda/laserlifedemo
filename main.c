@@ -20,14 +20,40 @@ static void player_init() {
 
 static frametime_t frame;
 
+static void initsound() {
+	saa1099_reg_init();
+	saa1099_set_amp(0, 0xf, 0xf);
+	saa1099_freq_enable(0);
+	saa1099_sound_enable();
+}
 ISR(TIMER3_COMPA_vect) {
 	PORTD ^= _BV(6);
 	screen_update(frame);
-	//circle();
-	heartbeat_tf(frame);
+#if 1
+	if (frame <= SCENE_INITBEAT) {
+		heartbeat_tf(frame);
+	} else if (frame <= SCENE_GLITCH) {
+		glitch(frame - SCENE_INITBEAT);
+	} else if (frame <= SCENE_AMBULANCE) {
+		ambulance(frame);
+	} else if (frame <= SCENE_MELODY) {
+		melody(frame - SCENE_AMBULANCE);
+	} else if (frame <= SCENE_ENDBEAT) {
+		heartbeat_tf(frame);
+	}
+	if (frame == SCENE_INITBEAT
+			|| frame == SCENE_GLITCH
+			|| frame == SCENE_AMBULANCE
+			|| frame == SCENE_MELODY
+			|| frame == SCENE_ENDBEAT)
+		initsound();
+#else
+	melody(frame);
+#endif
 	saa1099_sync();
 	frame++;
 }
+
 
 int main() {
 	clock_prescale_set(clock_div_1);
@@ -36,9 +62,7 @@ int main() {
 	player_init();
 	servos_init();
 	saa1099music_init();
-	saa1099_sound_enable();
-	saa1099_set_amp(0, 0xf, 0xf);
-	saa1099_freq_enable(0);
+	initsound();
 
 	sei();
 	for (;;)

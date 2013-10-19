@@ -16,4 +16,10 @@ typedef uint16_t frametime_t;
 
 #define SECONDS(s) ((s)*SECTICKS)
 
+#define SCENE_INITBEAT SECONDS(8)
+#define SCENE_GLITCH SECONDS(8 + 10)
+#define SCENE_AMBULANCE SECONDS(8 + 10 + 8)
+#define SCENE_MELODY SECONDS(8 + 10 + 8 + 25)
+#define SCENE_ENDBEAT SECONDS(8 + 10 + 8 + 25 + 10)
+
 #endif
