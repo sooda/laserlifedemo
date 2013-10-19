@@ -37,6 +37,8 @@ ISR(TIMER1_COMPB_vect) {
 	PORTB &= ~_BV(6);
 }
 
+// y, x
+// y 0 bottom, x 0 right
 void servos_update(uint8_t x, uint8_t y) {
 	PORTB |= _BV(5) | _BV(6);
 	OCR_x = 64 + x;

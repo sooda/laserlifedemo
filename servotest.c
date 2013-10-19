@@ -3,6 +3,7 @@
 #include <avr/interrupt.h>
 #include <util/delay.h>
 #include "servos.h"
+#include "demo.h"
 
 void player_init() {
 	// CTC, 256 prescaler, 50Hz
@@ -15,19 +16,53 @@ void player_init() {
 uint8_t x;
 uint8_t a,b=63;
 
+#define RED 1
+#define GREEN 2
+
+void lasers_init(void) {
+	DDRF |= _BV(6) | _BV(7);
+}
+
+void lasers_on(uint8_t flags) {
+	if (flags & RED)
+		PORTF |= _BV(6);
+	if (flags & GREEN)
+		PORTF |= _BV(7);
+}
+
+void lasers_off(uint8_t flags) {
+	if (flags & RED)
+		PORTF &= ~_BV(6);
+	if (flags & GREEN)
+		PORTF &= ~_BV(7);
+}
+
+#define ENDPOS 43
+
 ISR(TIMER3_COMPA_vect) {
-	if (++x == 50) {
-		x = 0;
-		a = 63 - a;
-		b = 63 - a;
+	x++;
+	if (x < ENDPOS) {
+		a++;
+		b--;
 	}
-	servos_update(a, b);
+	if (x == 1) {
+		lasers_on(RED|GREEN);
+	} else if (x == ENDPOS) {
+		a = 0;
+		b = 63;
+		lasers_off(RED|GREEN);
+	} else if (x == SECTICKS) {
+		x = 0;
+	}
+	servos_update(32 - 4 + 8 * !!(a & 4), b);
 	PORTD ^= _BV(6);
 }
 
 int main() {
 	clock_prescale_set(clock_div_1);
 	DDRD |= _BV(6);
+	lasers_init();
+	lasers_on(3);
 	player_init();
 	servos_init();
 	sei();

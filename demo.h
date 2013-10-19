@@ -8,7 +8,7 @@
  * System 50Hz: 16bit timer 3
  */
 
-typedef frametime_t uint16_t;
+typedef uint16_t frametime_t;
 
 #define SECTICKS 50
 
