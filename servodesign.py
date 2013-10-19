@@ -1,16 +1,17 @@
 import pygame
 from pygame.locals import *
 
-screenSize = [800,600]
+SCREENWID = 800
+SCREENHEI = 600
 
 pygame.init()
-screen = pygame.display.set_mode(screenSize)
+screen = pygame.display.set_mode((SCREENWID, SCREENHEI))
 
 DURATION = 1.0
 TICKS = 42
 TICKLEN = DURATION / TICKS
 
-TICKSCREENWID = screenSize[0] / TICKS
+TICKSCREENWID = SCREENWID / TICKS
 
 YSCALE = 63
 
@@ -21,22 +22,22 @@ def dump():
 
 def grid():
 	for i in range(TICKS-1):
-		pygame.draw.line(screen, (255, 0, 0), ((i+1)*TICKSCREENWID-1, 0), ((i+1)*TICKSCREENWID-1, screenSize[1]))
-	pygame.draw.line(screen, (255, 0, 0), (0, screenSize[1]/2), (screenSize[0], screenSize[1]/2))
+		pygame.draw.line(screen, (255, 0, 0), ((i+1)*TICKSCREENWID-1, 0), ((i+1)*TICKSCREENWID-1, SCREENHEI))
+	pygame.draw.line(screen, (255, 0, 0), (0, SCREENHEI/2), (SCREENWID, SCREENHEI/2))
 
 def updatetick(idx, val):
 	"""val [-1,1]"""
 	leftx = idx * TICKSCREENWID
-	topy = screenSize[1] / 2
-	height = 2 * (val - 0.5) * screenSize[1] / 2
-	pygame.draw.rect(screen, (0, 0,0), (leftx, 0, TICKSCREENWID-1, screenSize[1]))
+	topy = SCREENHEI / 2
+	height = 2 * (val - 0.5) * SCREENHEI / 2
+	pygame.draw.rect(screen, (0, 0,0), (leftx, 0, TICKSCREENWID-1, SCREENHEI))
 	pygame.draw.rect(screen, (0,255,0), (leftx, topy, TICKSCREENWID-1, height))
 	pygame.display.flip()
 	data[idx] = val
 
 def mouseclick(pos):
 	tick = pos[0] // TICKSCREENWID
-	val = float(pos[1]) / screenSize[1]
+	val = float(pos[1]) / SCREENHEI
 	val = float(int(val * YSCALE)) / YSCALE
 
 	updatetick(tick, val)
