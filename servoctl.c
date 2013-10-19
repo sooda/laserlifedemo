@@ -41,6 +41,7 @@ ISR(TIMER1_COMPB_vect) {
 // y 0 bottom, x 0 right
 void servos_update(uint8_t x, uint8_t y) {
 	x = 63 - x; // servo inverted
+	y = 63 - y; // servo inverted
 	PORTB |= _BV(5) | _BV(6);
 	OCR_y = 64 + x;
 	OCR_x = 64 + y;

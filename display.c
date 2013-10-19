@@ -1,63 +1,70 @@
+#include <stdint.h>
 #include "servos.h"
+#include "lasers.h"
+#include "analyze.h"
 #include "demo.h"
 
 #define TYPE_PICTURE 1
 #define TYPE_MUSIC 2
 
 struct frame {
-	frametime_t endframe;
+	frametime_t lastframe;
 	uint8_t type;
 	uint8_t buf[SECTICKS];
 };
 
 static struct frame frames[] = {
 	{
-		.endframe = -1,
+		.lastframe = SECONDS(3),
 		.type = TYPE_PICTURE,
-		.buf = 
+		.buf =  {
 #include "frame0.inc"
+		}
 	},
 	{
-		.endframe = -1,
+		.lastframe = -1,
 		.type = TYPE_MUSIC,
 		.buf = {}
 	},
+#if 0
 	{
-		.endframe = -1,
+		.lastframe = -1,
 		.type = TYPE_PICTURE,
 		.buf = 
 #include "frame1.inc"
 	},
+#endif
 };
 
 static struct frame *currframe = &frames[0];
 
-static frametime_t lastupdate;
 static uint8_t curridx;
 
-static void getheight(void) {
-}
-
 void screen_update(frametime_t frameno) {
-	if (currwid < SCREENWID) {
+	if (curridx < SCREENWID) {
 		uint8_t sz;
-		switch (curridx->type) {
+		switch (currframe->type) {
 			case TYPE_PICTURE:
 				sz = currframe->buf[curridx];
+				break;
 			case TYPE_MUSIC:
-				sz = music_loudness();
+				sz = 32 + analyze_loudness();
+				break;
 			default:
-				sz = 0;
+				sz = curridx;
+				break;
 		}
-		servos_update(sz, x);
+		servos_update(curridx, sz);
 		lasers_on(RED);
 	} else {
-		servos_update(0, 0);
+		servos_update(0, 32);
 		lasers_off(RED|GREEN);
 	}
-	if (++curridx == SCREENWID) {
+#if 1
+	if (++curridx == SECTICKS) {
 		curridx = 0;
-		if (frameno == currframe->endframe)
+		if (frameno == currframe->lastframe)
 			currframe++;
 	}
+#endif
 }

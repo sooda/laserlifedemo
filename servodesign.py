@@ -7,7 +7,7 @@ pygame.init()
 screen = pygame.display.set_mode(screenSize)
 
 DURATION = 1.0
-TICKS = 50 # i.e. frequency
+TICKS = 42
 TICKLEN = DURATION / TICKS
 
 TICKSCREENWID = screenSize[0] / TICKS
