@@ -9,7 +9,7 @@ pygame.init()
 screen = pygame.display.set_mode((SCREENWID, SCREENHEI))
 
 DURATION = 1.0
-TICKS = 64 - 21
+TICKS = 64 - 10
 TICKLEN = DURATION / TICKS
 
 TICKSCREENWID = float(SCREENWID) / TICKS

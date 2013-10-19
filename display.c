@@ -23,16 +23,12 @@ void loudness(frametime_t time, uint8_t *x, uint8_t *y) {
 	*y = 32 + analyze_loudness();
 }
 
+#include "sincos.h"
+
 void circle(frametime_t time, uint8_t *x, uint8_t *y) {
 	uint8_t subpos = time & 63;
-	uint8_t stage = (time & 0xff) >> 6;
-	switch (stage) {
-		case 0: *x /= 2; *y = 32 - *x; break;
-		case 1: *x /= 2; *y = 32 - *x; break;
-		case 2: *x /= 2; *y = 32 - 21; break;
-		case 3: *x = *y = 0; break;
-		default: return;
-	}
+	*x = 32 + mycos[subpos] / 16;
+	*y = 32 + mysin[subpos] / 16;
 }
 
 static struct frame frames[] = {
@@ -43,6 +39,12 @@ static struct frame frames[] = {
 #include "frame0.inc"
 		},
 		.lightflags = RED
+	},
+	{
+		.lastframe = SECONDS(30),
+		.type = TYPE_FUNC,
+		.render = circle,
+		.lightflags = RED,
 	},
 	{
 		.lastframe = SECONDS(3),
