@@ -11,7 +11,7 @@
 typedef uint16_t frametime_t;
 
 #define SECTICKS 50
-#define BLANKTIME 8
+#define BLANKTIME 7
 #define SCREENWID (SECTICKS-BLANKTIME)
 
 #define SECONDS(s) ((s)*SECTICKS)
