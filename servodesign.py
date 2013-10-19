@@ -11,7 +11,7 @@ DURATION = 1.0
 TICKS = 42
 TICKLEN = DURATION / TICKS
 
-TICKSCREENWID = SCREENWID / TICKS
+TICKSCREENWID = float(SCREENWID) / TICKS
 
 YSCALE = 63
 
@@ -36,7 +36,7 @@ def updatetick(idx, val):
 	data[idx] = val
 
 def mouseclick(pos):
-	tick = pos[0] // TICKSCREENWID
+	tick = int(pos[0] // TICKSCREENWID)
 	val = float(pos[1]) / SCREENHEI
 	val = float(int(val * YSCALE)) / YSCALE
 
