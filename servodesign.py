@@ -22,6 +22,7 @@ def dump():
 def grid():
 	for i in range(TICKS-1):
 		pygame.draw.line(screen, (255, 0, 0), ((i+1)*TICKSCREENWID-1, 0), ((i+1)*TICKSCREENWID-1, screenSize[1]))
+	pygame.draw.line(screen, (255, 0, 0), (0, screenSize[1]/2), (screenSize[0], screenSize[1]/2))
 
 def updatetick(idx, val):
 	"""val [-1,1]"""
