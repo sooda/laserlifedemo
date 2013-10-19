@@ -3,6 +3,7 @@
 #include <avr/interrupt.h>
 #include <util/delay.h>
 #include "servos.h"
+#include "lasers.h"
 #include "demo.h"
 
 void player_init() {
@@ -14,47 +15,24 @@ void player_init() {
 }
 
 uint8_t x;
-uint8_t a,b=63;
-
-#define RED 1
-#define GREEN 2
-
-void lasers_init(void) {
-	DDRF |= _BV(6) | _BV(7);
-}
-
-void lasers_on(uint8_t flags) {
-	if (flags & RED)
-		PORTF |= _BV(6);
-	if (flags & GREEN)
-		PORTF |= _BV(7);
-}
-
-void lasers_off(uint8_t flags) {
-	if (flags & RED)
-		PORTF &= ~_BV(6);
-	if (flags & GREEN)
-		PORTF &= ~_BV(7);
-}
-
-#define ENDPOS 43
+uint8_t a, b;
 
 ISR(TIMER3_COMPA_vect) {
 	x++;
-	if (x < ENDPOS) {
+	if (x < SCREENWID) {
 		a++;
-		b--;
-	}
-	if (x == 1) {
+		b++;
 		lasers_on(RED|GREEN);
-	} else if (x == ENDPOS) {
+		servos_update(a, 32 - 4 + 8 * !!(b & 4));
+	} else {
+		servos_update(0, 32);
 		a = 0;
-		b = 63;
+		b = 0;
 		lasers_off(RED|GREEN);
-	} else if (x == SECTICKS) {
+	}
+	if (x == SECTICKS) {
 		x = 0;
 	}
-	servos_update(32 - 4 + 8 * !!(a & 4), b);
 	PORTD ^= _BV(6);
 }
 
@@ -66,8 +44,6 @@ int main() {
 	player_init();
 	servos_init();
 	sei();
-	for (;;) {
-		_delay_ms(500);
-		//PORTD ^= _BV(6);
-	}
+	for (;;)
+		;
 }

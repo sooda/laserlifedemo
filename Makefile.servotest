@@ -1,4 +1,4 @@
-FILES ?= servotest.c servoctl.c
+FILES ?= servotest.c servoctl.c lasers.c
 PART ?= 90usb1286
 PROG ?= program
 F_CPU ?= 16000000

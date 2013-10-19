@@ -39,17 +39,23 @@ static void getheight(void) {
 }
 
 void screen_update(frametime_t frameno) {
-	uint8_t sz;
-	switch (curridx->type) {
-		case TYPE_PICTURE:
-			sz = currframe->buf[curridx];
-		case TYPE_MUSIC:
-			sz = music_loudness();
-		default:
-			sz = 0;
+	if (currwid < SCREENWID) {
+		uint8_t sz;
+		switch (curridx->type) {
+			case TYPE_PICTURE:
+				sz = currframe->buf[curridx];
+			case TYPE_MUSIC:
+				sz = music_loudness();
+			default:
+				sz = 0;
+		}
+		servos_update(sz, x);
+		lasers_on(RED);
+	} else {
+		servos_update(0, 0);
+		lasers_off(RED|GREEN);
 	}
-	servos_update(x, sz);
-	if (++curridx == SECTICKS) {
+	if (++curridx == SCREENWID) {
 		curridx = 0;
 		if (frameno == currframe->endframe)
 			currframe++;
