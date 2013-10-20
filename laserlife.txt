@@ -15,4 +15,7 @@ Reproduce it yourself, here's the wiring for the avr chip and saa1099:
 
 and the code in http://github.com/sooda
 
+In case you are going to try to replicate this and are having difficulty with
+obtaining the SAA1099 sound chip, contact tkln@IRCNet.
+
 sooda and tkln 2013
