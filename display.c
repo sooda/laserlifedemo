@@ -50,7 +50,11 @@ static void ambulance(frametime_t time, uint8_t *x, uint8_t *y) {
 }
 
 static void parsemzk(frametime_t time, uint8_t *x, uint8_t *y) {
-	*y = (((time & 7) << 3) | (time >> 3)) & 63;
+// just http://en.wikipedia.org/wiki/Linear_feedback_shift_register lol
+	static uint16_t lfsr = 0xACE1u;
+	lfsr = (lfsr >> 1) ^ (-(lfsr & 1u) & 0xB400u);
+	*y = lfsr & 63;
+	//*y = (((time & 7) << 3) | (time >> 3)) & 63;
 }
 
 static void circles(frametime_t time, uint8_t *x, uint8_t *y) {
