@@ -66,7 +66,7 @@ static void circles(frametime_t time, uint8_t *x, uint8_t *y) {
 
 static struct frame frames[] = {
 	{
-		.lastframe = SCENE_INITBEAT,
+		.lastframe = SCENE_INITBEAT-1,
 		.type = TYPE_PICTURE,
 		.buf =  {
 #include "frame0.inc"
@@ -74,25 +74,25 @@ static struct frame frames[] = {
 		.lightflags = RED
 	},
 	{
-		.lastframe = SCENE_GLITCH,
+		.lastframe = SCENE_GLITCH-1,
 		.render = circles,
 		.type = TYPE_FUNC,
 		.lightflags = GREEN,
 	},
 	{
-		.lastframe = SCENE_AMBULANCE,
+		.lastframe = SCENE_AMBULANCE-1,
 		.render = ambulance,
 		.type = TYPE_FUNC,
 		.lightflags = RED,
 	},
 	{
-		.lastframe = SCENE_MELODY,
+		.lastframe = SCENE_MELODY-1,
 		.render = parsemzk,
 		.type = TYPE_FUNC,
 		.lightflags = RED,
 	},
 	{
-		.lastframe = SCENE_ENDBEAT,
+		.lastframe = SCENE_ENDBEAT-1,
 		.type = TYPE_PICTURE,
 		.buf =  {
 #include "frame0.inc"
