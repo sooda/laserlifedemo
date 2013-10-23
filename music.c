@@ -50,11 +50,11 @@ void glitch(uint16_t t)
 }
 uint8_t fade_in(uint8_t rate, uint8_t max, uint16_t t)
 {
-	if (t > 960) { // (t+1)/rate > max || t/rate > max){
+	if ((t+1)/rate > max || t/rate > max){
 		return 0xF;
 	}
 	else {
-		return t>>6;//t/64;
+		return t/64;
 	}
 }
 uint8_t arp(uint8_t base_note, uint8_t step0, uint8_t step1, uint16_t t)
@@ -75,16 +75,14 @@ void melody(uint16_t t)
 	uint8_t i;
 #if 1
 	if ( t <= 1920) {
-		uint8_t f = t > 960 ? 0xf : t>>6;
-		saa1099_set_freq(0, 36+7, 0);
-		//saa1099_set_freq(0, arp(36, 4, 7, t), 0);
-		saa1099_set_amp(0, f/*fade_in(64, 0xf, t)*/, f/*fade_in(64, 0xf, t)*/);
+		saa1099_set_freq(0, arp(36, 4, 7, t), 0);
+		saa1099_set_amp(0, fade_in(64, 0xf, t), fade_in(64, 0xf, t));
 	}
 	else {
 		saa1099_freq_disable(0);
 	}
 #endif
-#if 0
+#if 1
 	if (t >= 960 && t <= 1920) {
 		for (i = 1; i <= 5; ++i) {
 			saa1099_freq_enable(i);
