@@ -40,6 +40,8 @@ inline void saa1099_set_ctl(uint8_t byte)
     CTRLPORT &= ~(1<<CS_PIN);
     saa1099_bus_set(byte);
     CTRLPORT &= ~(1<<WR_PIN);
+	/* not using dtack, so compensate manually */
+	_delay_us(3);
     CTRLPORT |= (1<<WR_PIN);
     CTRLPORT |= (1<<CS_PIN);
 }

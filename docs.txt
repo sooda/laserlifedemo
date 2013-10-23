@@ -7,6 +7,4 @@ by sooda & tkln
   CS = PD2, WR = PD3
 - state update @ 64 hz
 - servos: any standard ones, those blue cheap towerpro micro servos on the prod
-- bug: audio goes more or less haywire depending on the hardware and avr-gcc
-  version, maybe just a timing problem
 - the makefiles are copypasta'd and incomplete, use teensy_loader_cli for flashing
